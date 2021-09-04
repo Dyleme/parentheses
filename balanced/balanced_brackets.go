@@ -14,19 +14,19 @@ func IsBalanced(str string) bool {
 		case '[':
 			stack = append(stack, 3)
 		case '}':
-			if stack[len(stack)] == 1 {
+			if len(stack) != 0 &&  stack[len(stack)-1] == 1 {
 				stack = stack[:len(stack)-1]
 			} else {
 				return false
 			}
 		case ')':
-			if stack[len(stack)] == 2 {
+			if len(stack) != 0 && stack[len(stack)-1] == 2 {
 				stack = stack[:len(stack)-1]
 			} else {
 				return false
 			}
 		case ']':
-			if stack[len(stack)] == 3 {
+			if len(stack) != 0 && stack[len(stack)-1] == 3 {
 				stack = stack[:len(stack)-1]
 			} else {
 				return false
