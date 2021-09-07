@@ -1,6 +1,8 @@
-package balanced
+package balanced_test
 
 import (
+	parentheses "parentheses/parentheses"
+
 	"testing"
 )
 
@@ -22,6 +24,7 @@ func TestIsBalanced(t *testing.T) {
 		{")[])", ")[])", false},
 		{")", ")", false},
 		{"(", "(", false},
+		{"letters", "(1 + 2 * {3 + 4}) * [3 + 2]", true},
 	}
 
 	for _, tc := range testCases {
@@ -29,7 +32,7 @@ func TestIsBalanced(t *testing.T) {
 		t.Run(tc.testName, func(t *testing.T) {
 			t.Parallel()
 
-			if result := IsBalanced(tc.testString); result != tc.out {
+			if result := parentheses.IsBalanced(tc.testString); result != tc.out {
 				t.Errorf("balanced: want result %v, get result %v", tc.out, result)
 			}
 		})

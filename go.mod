@@ -1,4 +1,4 @@
-module parantheses
+module parentheses
 
 go 1.16
 
