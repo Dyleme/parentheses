@@ -6,28 +6,18 @@ import (
 	"testing"
 )
 
-//func TestStack_Push(t *testing.T) {
-//	t.Parallel()
-//
-//	var testCases = []struct{
-//		testName string
-//		in          []int
-//		inCapacity  int
-//	}
-//}
-
 func TestStack_Pop(t *testing.T) {
 	t.Parallel()
 
-	var testCases  = []struct{
+	var testCases = []struct {
 		testName string
 		pushed   []int
 		len      int
 		outVal   int
 		outErr   error
 	}{
-		{"delete one element", []int{1,2,3}, 2, 3, nil},
-		{"delete empty array one time", []int{},  0,0, stack.ErrPopEmpty},
+		{"delete one element", []int{1, 2, 3}, 2, 3, nil},
+		{"delete empty array one time", []int{}, 0, 0, stack.ErrPopEmpty},
 		{"delete one element", []int{1}, 0, 1, nil},
 	}
 
@@ -45,7 +35,7 @@ func TestStack_Pop(t *testing.T) {
 			if val != tc.outVal {
 				t.Errorf("value want %v, value get %v", tc.outVal, val)
 			}
-			if !errors.Is(err,tc.outErr) {
+			if !errors.Is(err, tc.outErr) {
 				t.Errorf("error want %v, error get %v", tc.outErr, err)
 			}
 		})
@@ -55,13 +45,13 @@ func TestStack_Pop(t *testing.T) {
 func TestStack_Empty(t *testing.T) {
 	t.Parallel()
 
-	var testCases = []struct{
+	var testCases = []struct {
 		testName string
 		in       []int
 		out      bool
 	}{
 		{"empty", nil, true},
-		{"elements exists", []int{1,2,3}, false},
+		{"elements exists", []int{1, 2, 3}, false},
 	}
 
 	for _, tc := range testCases {

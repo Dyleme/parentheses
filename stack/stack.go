@@ -13,15 +13,17 @@ type Stack []int
 
 // New returns empty stack of the given capacity
 func New(capacity int) *Stack {
-	var stack Stack
-	stack = make([]int, 0, capacity)
+	var stack Stack = make([]int, 0, capacity)
+
 	return &stack
 }
 
 // NewFromSlice make a stack from slice by copy
-func NewFromSlice(slice []int) *Stack{
+func NewFromSlice(slice []int) *Stack {
 	var stack Stack = make([]int, len(slice), cap(slice))
+
 	copy(stack, slice)
+
 	return &stack
 }
 
@@ -31,7 +33,7 @@ func (s *Stack) Top() int {
 }
 
 // Push add element to the stack
-//Relocate stack if capacity is end.
+// Relocate stack if capacity is end.
 func (s *Stack) Push(addable int) {
 	if length := len(*s); length == cap(*s) {
 		temp := make([]int, length+1, 2*length+1)
