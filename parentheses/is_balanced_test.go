@@ -23,7 +23,7 @@ func TestIsBalanced(t *testing.T) {
 		{"one close bracket", ")", false},
 		{"one open bracket", "(", false},
 		{"true with letters", "(1 + 2 * {3 + 4}) * [3 + 2]", true},
-		{"wrong with letters", "{(1 + 2) - [3 + 4}]",false},
+		{"wrong with letters", "{(1 + 2) - [3 + 4}]", false},
 		{"UTF-8 characters", "(П{Р}[ивет])", true},
 		{"empty string", "", true},
 	}
