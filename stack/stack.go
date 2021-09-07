@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-var ErrPopEmpty = errors.New("stack: pop empty stack")
+var ErrEmptyStack = errors.New("stack: empty stack")
 
 // Stack structure, defines such operations as:
 // Pop(), Top(), Push(), Empty().
@@ -28,8 +28,12 @@ func NewFromSlice(slice []int) *Stack {
 }
 
 // Top returns top element of the stack.
-func (s *Stack) Top() int {
-	return (*s)[len(*s)-1]
+func (s *Stack) Top() (int, error) {
+	if s.Empty() {
+		return 0, fmt.Errorf("top: %w", ErrEmptyStack)
+	}
+
+	return (*s)[len(*s)-1], nil
 }
 
 // Push add element to the stack
@@ -49,7 +53,7 @@ func (s *Stack) Push(addable int) {
 // Return (top element, nil) if stack isn't empty.
 func (s *Stack) Pop() (int, error) {
 	if s.Empty() {
-		return 0, fmt.Errorf("pop: %w", ErrPopEmpty)
+		return 0, fmt.Errorf("pop: %w", ErrEmptyStack)
 	}
 
 	temp := (*s)[len(*s)-1]

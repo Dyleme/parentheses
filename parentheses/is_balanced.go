@@ -31,7 +31,7 @@ func tryPop(s *stack.Stack, char rune) bool {
 		return false
 	}
 
-	if s.Top() == int(char) {
+	if val, _ := s.Top(); val == int(char) {
 		_, err := s.Pop()
 		if err != nil {
 			return false
