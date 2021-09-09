@@ -1,8 +1,7 @@
-package balanced_test
+package parentheses_test
 
 import (
-	parentheses "parentheses/parentheses"
-
+	"parentheses/parentheses"
 	"testing"
 )
 
