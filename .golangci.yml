@@ -33,6 +33,8 @@ linters:
     - gofmt
     - goimports
     - gomnd
+    - gomoddirectives
+    - gomodguard
     - gocyclo
     - gosec
     - gosimple
