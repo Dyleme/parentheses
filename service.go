@@ -46,7 +46,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	key := q.Get("n")
 
 	if key == "" {
-		log.Printf("wrong request, parametr doesn't exist")
+		log.Printf("wrong request, parameter doesn't exist")
 
 		return
 	}
@@ -55,6 +55,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		log.Printf("can't convert key %q to int", key)
+
+		return
+	}
+
+	if length < 0 {
+		log.Printf("provided parameter is negative: %v", length)
 
 		return
 	}
