@@ -44,16 +44,18 @@ func TestHandlerGenerator(t *testing.T) {
 
 	var testCases = []struct {
 		name   string
+		method string
 		param  string
 		gen    func(int) string
 		body   string
 		status int
 	}{
-		{"empty parameter", "", DefaultGenerate, "strconv.Atoi: parsing \"\": invalid syntax\n", 500},
-		{"negative parameter", "-5", DefaultGenerate, "argument isn't positive: -5\n", 500},
-		{"correct input", "4", func(l int) string {
+		{"empty parameter", "GET", "", DefaultGenerate, "strconv.Atoi: parsing \"\": invalid syntax\n", 500},
+		{"negative parameter", "GET", "-5", DefaultGenerate, "argument isn't positive: -5\n", 500},
+		{"correct input", "GET", "4", func(l int) string {
 			return "{])["
 		}, "{])[", 200},
+		{"unknown method", "POST", "2", DefaultGenerate, "method isn't allowed: POST\n", 405},
 	}
 
 	for _, tc := range testCases {
@@ -62,7 +64,7 @@ func TestHandlerGenerator(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
 
-			req, err := http.NewRequest("GET", "/generate", nil)
+			req, err := http.NewRequest(tc.method, "/generate", nil)
 			if err != nil {
 				t.Fatal(err)
 			}

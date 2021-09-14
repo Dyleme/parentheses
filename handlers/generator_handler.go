@@ -11,9 +11,9 @@ import (
 )
 
 var (
-	ErrNotPositiveArgument   = errors.New("argument isn't positive")
-	ErrMethodIsntAllowed     = errors.New("method isn't allowed")
-	ErrParameterIsntProvided = errors.New("parameter isn't provided")
+	ErrNotPositiveArgument  = errors.New("argument isn't positive")
+	ErrMethodNotAllowed     = errors.New("method isn't allowed")
+	ErrParameterNotProvided = errors.New("parameter isn't provided")
 )
 
 type GeneratorHandler struct {
@@ -42,7 +42,7 @@ func (g *GeneratorHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	length, err := validateRequest(r)
 
 	switch {
-	case errors.Is(err, ErrMethodIsntAllowed):
+	case errors.Is(err, ErrMethodNotAllowed):
 		http.Error(w, err.Error(), http.StatusMethodNotAllowed)
 	case err != nil:
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -61,13 +61,13 @@ func (g *GeneratorHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 // If error occur it returns (0, error), else it returns (parameter "n", nil).
 func validateRequest(r *http.Request) (int, error) {
 	if r.Method != http.MethodGet && r.Method != http.MethodHead {
-		return 0, fmt.Errorf("%w: %s", ErrMethodIsntAllowed, r.Method)
+		return 0, fmt.Errorf("%w: %s", ErrMethodNotAllowed, r.Method)
 	}
 
 	key, exist := r.URL.Query()["n"]
 
 	if !exist {
-		return 0, fmt.Errorf("%w: %s", ErrParameterIsntProvided, "n")
+		return 0, fmt.Errorf("%w: %s", ErrParameterNotProvided, "n")
 	}
 
 	length, err := strconv.Atoi(key[0])
