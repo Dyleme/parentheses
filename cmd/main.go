@@ -8,6 +8,6 @@ import (
 )
 
 func main() {
-	http.Handle("/generate", &handlers.GeneratorHandler{Generate: handlers.DefaultGenerate})
+	http.Handle("/generate", handlers.New(&handlers.Generation{}))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
