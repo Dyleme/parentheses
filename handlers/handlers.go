@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"parentheses/parentheses"
 	"strconv"
 )
 
@@ -31,28 +30,26 @@ type Generator interface {
 	Generate(length int) string
 }
 
-// BracketsGenerator is implementation of Generator which generate random sequence of brackets.
-type BracketsGenerator struct{}
-
-// Generate function generate random sequence of brackets.
-func (g *BracketsGenerator) Generate(length int) string {
-	return parentheses.GenerateBrackets(length)
-}
-
 // ServeHTTP handles only GET method
 // Writes sequence of brackets in body or error if it occurs.
 func (g *GeneratorHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	length, err := validateRequest(r)
 
-	if errors.Is(err, errMethodNotAllowed) { //nolint:gocritic // if-else is easier to understand
+	if errors.Is(err, errMethodNotAllowed) {
 		http.Error(w, err.Error(), http.StatusMethodNotAllowed)
-	} else if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	} else {
-		temp := g.gen.Generate(length)
 
-		w.Write([]byte(temp)) //nolint:errcheck // error can't appear.
+		return
 	}
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+		return
+	}
+
+	temp := g.gen.Generate(length)
+
+	w.Write([]byte(temp)) //nolint:errcheck // error can't appear.
 }
 
 // function validateRequest checks if the method and parameter is correct.

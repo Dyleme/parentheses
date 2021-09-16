@@ -48,7 +48,10 @@ func TestGenerateBrackets(t *testing.T) {
 		in       int
 		out      int
 	}{
-		{"positive length", 8, 8},
+		{"positive length 8", 8, 8},
+		{"positive length 2", 2, 2},
+		{"zero length", 0, 0},
+		{"negative length", -2, 0},
 	}
 
 	for _, tc := range testCases {
@@ -58,8 +61,8 @@ func TestGenerateBrackets(t *testing.T) {
 
 			brackets := parentheses.GenerateBrackets(tc.in)
 
-			if length := len(brackets); length != tc.in {
-				t.Errorf("length want %v, length get %v", tc.in, length)
+			if length := len(brackets); length != tc.out {
+				t.Errorf("length want %v, length get %v", tc.out, length)
 			}
 
 			for _, char := range brackets {
@@ -67,35 +70,6 @@ func TestGenerateBrackets(t *testing.T) {
 					t.Errorf("in sequence exists non bracket %v", char)
 				}
 			}
-		})
-	}
-}
-
-func TestGenerateBracketsPanic(t *testing.T) {
-	t.Parallel()
-
-	var testCases = []struct {
-		name        string
-		length      int
-		resultPanic bool
-	}{
-		{"panic zero", 0, true},
-		{"panic negative", -1, true},
-		{"don't panic", 1, false},
-	}
-
-	for _, tc := range testCases {
-		tc := tc
-
-		t.Run(tc.name, func(t *testing.T) {
-			t.Parallel()
-
-			defer func() {
-				if wasPanic := recover() != nil; (!wasPanic || !tc.resultPanic) && (wasPanic || tc.resultPanic) {
-					t.Errorf("panic want %v got %v", tc.resultPanic, wasPanic)
-				}
-			}()
-			parentheses.GenerateBrackets(tc.length)
 		})
 	}
 }

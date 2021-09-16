@@ -24,11 +24,11 @@ func TestHandlerGenerator(t *testing.T) {
 		body      string
 		status    int
 	}{
-		{"empty parameter", "GET", "n", "", &BracketsGenerator{}, "can't convert to int: \"\"\n", 500},
-		{"negative parameter", "GET", "n", "-5", &BracketsGenerator{}, "argument isn't positive: -5\n", 500},
+		{"empty parameter", "GET", "n", "", mockGenerator("()"), "can't convert to int: \"\"\n", 500},
+		{"negative parameter", "GET", "n", "-5", mockGenerator("()"), "argument isn't positive: -5\n", 500},
 		{"correct input", "GET", "n", "4", mockGenerator("{])["), "{])[", 200},
-		{"unknown method", "POST", "n", "2", &BracketsGenerator{}, "method isn't allowed: POST\n", 405},
-		{"wrong parameter", "GET", "t", "2", &BracketsGenerator{}, "parameter isn't provided: n\n", 500},
+		{"unknown method", "POST", "n", "2", mockGenerator("()"), "method isn't allowed: POST\n", 405},
+		{"wrong parameter", "GET", "t", "2", mockGenerator("()"), "parameter isn't provided: n\n", 500},
 	}
 
 	for _, tc := range testCases {

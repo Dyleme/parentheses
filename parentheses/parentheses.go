@@ -35,7 +35,7 @@ func IsBalanced(str string) bool {
 // Argument length must be positive number, otherwise function panics.
 func GenerateBrackets(length int) string {
 	if length < 1 {
-		panic("length of sequences can not be zero or negative number")
+		return ""
 	}
 
 	brackets := "(){}[]"
