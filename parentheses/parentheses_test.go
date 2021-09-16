@@ -70,3 +70,30 @@ func TestGenerateBrackets(t *testing.T) {
 		})
 	}
 }
+
+func TestGenerateBracketsPanic(t *testing.T) {
+	t.Parallel()
+
+	var testCases = []struct {
+		name   string
+		length int
+	}{
+		{"panic zero", 0},
+		{"panic negative", -1},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			defer func() {
+				if r := recover(); r == nil {
+					t.Errorf("program didn't panic")
+				}
+			}()
+			parentheses.GenerateBrackets(tc.length)
+		})
+	}
+}
