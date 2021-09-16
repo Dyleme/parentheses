@@ -28,14 +28,14 @@ func New(gen Generator) *GeneratorHandler {
 
 // Generator is interface to generate string.
 type Generator interface {
-	generate(length int) string
+	Generate(length int) string
 }
 
-// Generation is implementation of Generator which generate random sequence of brackets.
-type Generation struct{}
+// BracketsGenerator is implementation of Generator which generate random sequence of brackets.
+type BracketsGenerator struct{}
 
-// DefaultGenerate generate random sequence of brackets.
-func (g *Generation) generate(length int) string {
+// Generate function generate random sequence of brackets.
+func (g *BracketsGenerator) Generate(length int) string {
 	return parentheses.GenerateBrackets(length)
 }
 
@@ -49,7 +49,7 @@ func (g *GeneratorHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	} else if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	} else {
-		temp := g.gen.generate(length)
+		temp := g.gen.Generate(length)
 
 		w.Write([]byte(temp)) //nolint:errcheck // error can't appear.
 	}

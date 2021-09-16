@@ -6,9 +6,9 @@ import (
 	"testing"
 )
 
-type FakeGen string
+type mockGenerator string
 
-func (f FakeGen) generate(length int) string {
+func (f mockGenerator) Generate(length int) string {
 	return string(f)
 }
 
@@ -16,19 +16,19 @@ func TestHandlerGenerator(t *testing.T) {
 	t.Parallel()
 
 	var testCases = []struct {
-		name     string
-		method   string
-		parametr string
-		value    string
-		gen      Generator
-		body     string
-		status   int
+		name      string
+		method    string
+		parameter string
+		value     string
+		gen       Generator
+		body      string
+		status    int
 	}{
-		{"empty parameter", "GET", "n", "", &Generation{}, "can't convert to int: \"\"\n", 500},
-		{"negative parameter", "GET", "n", "-5", &Generation{}, "argument isn't positive: -5\n", 500},
-		{"correct input", "GET", "n", "4", FakeGen("{])["), "{])[", 200},
-		{"unknown method", "POST", "n", "2", &Generation{}, "method isn't allowed: POST\n", 405},
-		{"wrong parameter", "GET", "t", "2", &Generation{}, "parameter isn't provided: n\n", 500},
+		{"empty parameter", "GET", "n", "", &BracketsGenerator{}, "can't convert to int: \"\"\n", 500},
+		{"negative parameter", "GET", "n", "-5", &BracketsGenerator{}, "argument isn't positive: -5\n", 500},
+		{"correct input", "GET", "n", "4", mockGenerator("{])["), "{])[", 200},
+		{"unknown method", "POST", "n", "2", &BracketsGenerator{}, "method isn't allowed: POST\n", 405},
+		{"wrong parameter", "GET", "t", "2", &BracketsGenerator{}, "parameter isn't provided: n\n", 500},
 	}
 
 	for _, tc := range testCases {
@@ -36,7 +36,7 @@ func TestHandlerGenerator(t *testing.T) {
 
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			path := "/generate?" + tc.parametr + "=" + tc.value
+			path := "/generate?" + tc.parameter + "=" + tc.value
 			req := httptest.NewRequest(tc.method, path, nil)
 
 			rr := httptest.NewRecorder()

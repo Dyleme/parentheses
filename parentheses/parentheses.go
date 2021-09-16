@@ -32,9 +32,13 @@ func IsBalanced(str string) bool {
 }
 
 // GenerateBrackets generate random sequence of brackets provided length.
-// length must be positive number.
+// Argument length must be positive number, otherwise function panics.
 func GenerateBrackets(length int) string {
-	var bracket = "(){}[]"
+	if length < 1 {
+		panic("length of sequences can not be zero or negative number")
+	}
+
+	brackets := "(){}[]"
 
 	rand.Seed(time.Now().Unix())
 
@@ -43,7 +47,7 @@ func GenerateBrackets(length int) string {
 	sb.Grow(length)
 
 	for i := 0; i < length; i++ {
-		sb.WriteRune(rune(bracket[rand.Intn(len(bracket))])) //nolint:gosec //Should used by the task.
+		sb.WriteRune(rune(brackets[rand.Intn(len(brackets))])) //nolint:gosec //Should be used according to  the task.
 	}
 
 	return sb.String()
