@@ -75,11 +75,13 @@ func TestGenerateBracketsPanic(t *testing.T) {
 	t.Parallel()
 
 	var testCases = []struct {
-		name   string
-		length int
+		name        string
+		length      int
+		resultPanic bool
 	}{
-		{"panic zero", 0},
-		{"panic negative", -1},
+		{"panic zero", 0, true},
+		{"panic negative", -1, true},
+		{"don't panic", 1, false},
 	}
 
 	for _, tc := range testCases {
@@ -89,8 +91,8 @@ func TestGenerateBracketsPanic(t *testing.T) {
 			t.Parallel()
 
 			defer func() {
-				if r := recover(); r == nil {
-					t.Errorf("program didn't panic")
+				if wasPanic := recover() != nil; (!wasPanic || !tc.resultPanic) && (wasPanic || tc.resultPanic) {
+					t.Errorf("panic want %v got %v", tc.resultPanic, wasPanic)
 				}
 			}()
 			parentheses.GenerateBrackets(tc.length)
