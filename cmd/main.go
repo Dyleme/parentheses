@@ -18,6 +18,6 @@ func (g *BracketsGenerator) Generate(length int) string {
 
 func main() {
 	genSv := BracketsGenerator{}
-	http.Handle("/generate", handlers.New(&genSv))
+	http.Handle("/generate", handlers.NewGenHandler(&genSv))
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

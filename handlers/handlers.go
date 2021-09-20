@@ -20,8 +20,8 @@ type GeneratorHandler struct {
 	gen Generator
 }
 
-// New is constructor for GeneratorHandler.
-func New(gen Generator) *GeneratorHandler {
+// NewGenHandler is constructor for GeneratorHandler.
+func NewGenHandler(gen Generator) *GeneratorHandler {
 	return &GeneratorHandler{gen: gen}
 }
 
