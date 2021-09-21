@@ -1,7 +1,10 @@
 package parentheses
 
 import (
+	"math/rand"
 	"strings"
+	"sync"
+	"time"
 )
 
 // IsBalanced function check if provided string contains correct sequence of brackets.
@@ -27,4 +30,28 @@ func IsBalanced(str string) bool {
 	}
 
 	return len(stack) == 0
+}
+
+var once sync.Once
+
+// GenerateBrackets generate random sequence of brackets provided length.
+// Argument length must be positive number, otherwise function panics.
+func GenerateBrackets(length int) string {
+	if length < 1 {
+		return ""
+	}
+
+	once.Do(func() { rand.Seed(time.Now().Unix()) })
+
+	brackets := "(){}[]"
+
+	var sb strings.Builder
+
+	sb.Grow(length)
+
+	for i := 0; i < length; i++ {
+		sb.WriteRune(rune(brackets[rand.Intn(len(brackets))])) //nolint:gosec //Should be used according to  the task.
+	}
+
+	return sb.String()
 }
