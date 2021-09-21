@@ -3,6 +3,7 @@ package parentheses
 import (
 	"math/rand"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -31,6 +32,8 @@ func IsBalanced(str string) bool {
 	return len(stack) == 0
 }
 
+var once sync.Once
+
 // GenerateBrackets generate random sequence of brackets provided length.
 // Argument length must be positive number, otherwise function panics.
 func GenerateBrackets(length int) string {
@@ -38,9 +41,9 @@ func GenerateBrackets(length int) string {
 		return ""
 	}
 
-	brackets := "(){}[]"
+	once.Do(func() { rand.Seed(time.Now().Unix())})
 
-	rand.Seed(time.Now().Unix())
+	brackets := "(){}[]"
 
 	var sb strings.Builder
 
@@ -51,4 +54,8 @@ func GenerateBrackets(length int) string {
 	}
 
 	return sb.String()
+}
+
+func init()  {
+	//rand.Seed(time.Now().Unix())
 }
