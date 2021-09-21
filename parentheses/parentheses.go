@@ -41,7 +41,7 @@ func GenerateBrackets(length int) string {
 		return ""
 	}
 
-	once.Do(func() { rand.Seed(time.Now().Unix())})
+	once.Do(func() { rand.Seed(time.Now().Unix()) })
 
 	brackets := "(){}[]"
 
@@ -54,8 +54,4 @@ func GenerateBrackets(length int) string {
 	}
 
 	return sb.String()
-}
-
-func init()  {
-	//rand.Seed(time.Now().Unix())
 }
