@@ -59,6 +59,6 @@ func BalancedBracketProbability(bracketAmount int) float32 {
 
 func main() {
 	for i := 2; i <= 8; i *= 2 {
-		fmt.Println(BalancedBracketProbability(i))
+		fmt.Printf("Probability of the correct brackets sequence of %v brackets is %.2f %%\n", i, 100*BalancedBracketProbability(i))
 	}
 }
