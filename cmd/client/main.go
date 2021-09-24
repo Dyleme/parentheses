@@ -18,21 +18,27 @@ func DoRequest(amount int, results chan bool) {
 	if amount < 0 {
 		fmt.Println(fmt.Errorf("amount of brackets is not positive %v", amount))
 		results <- false
+
+		return
 	}
 
 	resp, err := http.Get(urlPath + strconv.Itoa(amount))
 	if err != nil {
 		fmt.Println(err)
 		results <- false
+
+		return
 	}
-	defer resp.Body.Close()
 
 	body := make([]byte, amount)
 	_, err = resp.Body.Read(body)
+	defer resp.Body.Close()
 
 	if err != io.EOF {
 		fmt.Println(err)
 		results <- false
+
+		return
 	}
 
 	results <- parentheses.IsBalanced(string(body))
@@ -59,6 +65,6 @@ func BalancedBracketProbability(bracketAmount int) float32 {
 
 func main() {
 	for i := 2; i <= 8; i *= 2 {
-		fmt.Printf("Probability of the correct brackets sequence of %v brackets is %.2f %%\n", i, 100*BalancedBracketProbability(i))
+		fmt.Printf("Probability of the correct brackets sequence of %v brackets is %.2f %%\n", i, 100*BalancedBracketProbability(i)) // nolint:gomnd //100 is 100 percents
 	}
 }
