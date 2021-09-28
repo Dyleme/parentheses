@@ -12,9 +12,16 @@ const urlPath = "http://localhost:8080/generate?n="
 
 const requestAmount = 1000
 
+// worker is made to limit amount of requests
+func worker(jobs <-chan int, results chan<- bool, amount int) {
+	for range jobs {
+		DoRequest(amount, results)
+	}
+}
+
 // DoRequest do request to the url with parameter n equals to amount.
 // And writes the result of IsBalanced function, which argument is response body, to the channel.
-func DoRequest(amount int, results chan bool) {
+func DoRequest(amount int, results chan<- bool) {
 	if amount < 0 {
 		fmt.Println(fmt.Errorf("amount of brackets is not positive %v", amount))
 		results <- false
@@ -31,6 +38,7 @@ func DoRequest(amount int, results chan bool) {
 	}
 
 	body := make([]byte, amount)
+
 	_, err = resp.Body.Read(body)
 	defer resp.Body.Close()
 
@@ -49,9 +57,16 @@ func DoRequest(amount int, results chan bool) {
 func BalancedBracketProbability(bracketAmount int) float32 {
 	counter := 0
 	results := make(chan bool)
+	jobs := make(chan int)
+
+	for i := 0; i < 10; i++ {
+		go worker(jobs, results, bracketAmount)
+	}
 
 	for i := 0; i < requestAmount; i++ {
-		go DoRequest(bracketAmount, results)
+		c := i
+
+		go func() { jobs <- c }()
 	}
 
 	for i := 0; i < requestAmount; i++ {
@@ -59,6 +74,7 @@ func BalancedBracketProbability(bracketAmount int) float32 {
 			counter++
 		}
 	}
+	close(jobs)
 
 	return float32(counter) / requestAmount
 }
